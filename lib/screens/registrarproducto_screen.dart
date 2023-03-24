@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mongo_1447/models/productos.dart';
+import 'package:mongo_1447/mongodb.dart' ;
+import 'package:mongo_dart/mongo_dart.dart'as mongo_dart;
 
 class RegistrarProductoScreen extends StatefulWidget {
   const RegistrarProductoScreen({super.key});
@@ -25,13 +28,14 @@ class _RegistrarProductoScreenState extends State<RegistrarProductoScreen> {
       child:Column(
         children: [
           TextFormField(controller: codigo),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           TextFormField(controller: nombre),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           TextFormField(controller: precio),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           ElevatedButton(onPressed: () {
             print(codigo.text);
+            insertarProducto(int.parse(codigo.text), nombre.text, int.parse(precio.text));
           }, child: Text('Registrar'))
         ],
       ),
@@ -40,4 +44,11 @@ class _RegistrarProductoScreenState extends State<RegistrarProductoScreen> {
      
     );
   }
+}
+
+Future<void> insertarProducto(codigo, nombre, precio) async{
+    final id = mongo_dart.ObjectId();
+    final datos = Productos(id:id, codigo: codigo, nombre:nombre, precio:precio);
+    print(datos.toJson());
+    await Mongodb.insertar(datos);
 }

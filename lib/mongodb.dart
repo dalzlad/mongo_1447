@@ -1,4 +1,5 @@
 import 'package:mongo_1447/context.dart';
+import 'package:mongo_1447/models/productos.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class Mongodb{
@@ -9,10 +10,17 @@ class Mongodb{
     db = await Db.create(mongoURL);
     await db.open();
     coleccion = db.collection(nombreColeccion);
-    await coleccion.insertOne({
+    /*await coleccion.insertOne({
       "codigo": 777,
       "nombre": 'Papaya',
       "precio": 3000
     });
+    */
   }
+
+    static insertar(Productos producto) async {
+      await coleccion.insertOne(producto.toMap());
+      print(producto);
+  } 
+
 }
