@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:mongo_1447/context.dart';
 import 'package:mongo_1447/models/productos.dart';
 import 'package:mongo_dart/mongo_dart.dart';
@@ -22,5 +24,17 @@ class Mongodb{
       await coleccion.insertOne(producto.toMap());
       print(producto);
   } 
+
+
+  static Future<List<Map<String, dynamic>>> Listar() async {
+    try {
+      final productos = await coleccion.find().toList();
+      print(productos);
+      return productos;
+    } catch (e) {
+      //print(e);
+      return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
 
 }

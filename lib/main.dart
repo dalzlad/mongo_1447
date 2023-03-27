@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mongo_1447/mongodb.dart';
+import 'package:mongo_1447/screens/listarproductos_screen.dart';
 import 'package:mongo_1447/screens/registrarproducto_screen.dart';
 
 Future<void> main() async {
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const RegistrarProductoScreen()
+      //home: const RegistrarProductoScreen()
+      home:const ListarProductosScreen()
     );
   }
 }
