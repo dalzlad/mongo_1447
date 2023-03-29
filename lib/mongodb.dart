@@ -25,6 +25,14 @@ class Mongodb{
       print(producto);
   } 
 
+  
+  static actualizar(Productos producto) async {
+    var result = await coleccion.updateOne(where.eq('_id', producto.id), 
+    modify.set('precio', producto.precio));
+      //await coleccion.insertOne(producto.toMap());
+      print(producto);
+  } 
+
 
   static Future<List<Map<String, dynamic>>> Listar() async {
     try {

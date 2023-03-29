@@ -27,6 +27,12 @@ class _ListarProductosScreenState extends State<ListarProductosScreen> {
               return ListView.builder(
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
+                    final producto = Productos(
+                      id:snapshot.data?[index]['_id'],
+                      codigo:snapshot.data?[index]['codigo'],
+                      nombre:snapshot.data?[index]['nombre'],
+                      precio:snapshot.data?[index]['precio'],
+                    );
                       print(snapshot.data?[index]['codigo']);
                       var imagen = snapshot.data?[index]['codigo'];
                       return(Card(
@@ -39,7 +45,7 @@ class _ListarProductosScreenState extends State<ListarProductosScreen> {
                           onTap: () {
                           Navigator.push(context, 
                           MaterialPageRoute(builder: (context) => 
-                            EditarProductoScreen()
+                            EditarProductoScreen(producto)
                                   ,)  );
                           },   
 
@@ -58,14 +64,11 @@ class _ListarProductosScreenState extends State<ListarProductosScreen> {
   }
 }
 
-class EditarProductoScreen extends StatefulWidget {
-  const EditarProductoScreen({super.key});
+class EditarProductoScreen extends StatelessWidget {
+  
+  final Productos producto;
+  EditarProductoScreen(this.producto, {super.key});
 
-  @override
-  State<EditarProductoScreen> createState() => _EditarProductoScreenState();
-}
-
-class _EditarProductoScreenState extends State<EditarProductoScreen> {
   final codigo = TextEditingController();
 
   final nombre = TextEditingController();
@@ -74,6 +77,9 @@ class _EditarProductoScreenState extends State<EditarProductoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    codigo.text = producto.codigo.toString();
+    nombre.text = producto.nombre.toString();
+    precio.text = producto.precio.toString();
     return Scaffold(
       appBar: AppBar(
         title:const Text('Editar Producto'),
@@ -90,8 +96,8 @@ class _EditarProductoScreenState extends State<EditarProductoScreen> {
           const SizedBox(height: 10,),
           ElevatedButton(onPressed: () {
             print(codigo.text);
-            insertarProducto(int.parse(codigo.text), nombre.text, int.parse(precio.text));
-          }, child: Text('Registrar'))
+            actualizarProducto(producto.id,int.parse(codigo.text), nombre.text, int.parse(precio.text));
+          }, child: Text('Actualizar'))
         ],
       ),
       )
@@ -106,4 +112,11 @@ Future<void> insertarProducto(codigo, nombre, precio) async{
     final datos = Productos(id:id, codigo: codigo, nombre:nombre, precio:precio);
     print(datos.toJson());
     await Mongodb.insertar(datos);
+}
+
+
+Future<void> actualizarProducto(id, codigo, nombre, precio) async{
+    final datos = Productos(id:id, codigo: codigo, nombre:nombre, precio:precio);
+    print(datos.toJson());
+    await Mongodb.actualizar(datos);
 }
